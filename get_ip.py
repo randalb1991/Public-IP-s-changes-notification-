@@ -5,16 +5,19 @@ from urllib2 import urlopen
 import datetime
 import time
 import boto3
-
+import os
+path_base = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+log_file = os.path.join(path_base, 'ips.log')
+db_path = os.path.join(path_base, 'ips.db')
 logging.basicConfig(
-    filename='ips.log',
+    filename=log_file,
     level=logging.DEBUG,
     format='%(asctime)s %(name)-12s %(lineno)s '
            '%(levelname)-8s %(message)s',
     datefmt='%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
-conexion = sqlite3.connect('ips.db')
-arn = ''
+conexion = sqlite3.connect(db_path)
+arn = 'arn:aws:sns:eu-west-1:533680604961:nas_house'
 
 cursor = conexion.cursor()
 
