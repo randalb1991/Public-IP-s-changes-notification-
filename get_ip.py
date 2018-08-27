@@ -47,11 +47,14 @@ def send_notification(current_ip):
 
 def save_my_current_ip():
     cursor.execute("SELECT ip from ips order  by time_stamp desc")
-    last_tip = cursor.fetchone()[0]
-    logger.debug('Your last ip saved is {}'.format(last_tip))
+    try:
+        last_ip = cursor.fetchone()[0]
+    except:
+        last_ip = None
+    logger.debug('Your last ip saved is {}'.format(last_ip))
     current_ip = get_my_public_ip()
     logger.debug('Your current Ip is {}'.format(current_ip).encode('utf8'))
-    if last_tip != current_ip:
+    if (last_ip != current_ip) or (last_ip is None):
         logger.debug('Your IP is different now')
         logger.debug('Saving your current ip')
         element = (get_my_public_ip(), get_date_time(), get_timestamp())
